@@ -1,0 +1,23 @@
+@apiUrl = http://localhost:3000
+
+POST {{apiUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "let", 
+  "cpf": "12345678905", 
+  "password": "12345"
+}
+
+###GET USERS 
+
+GET {{apiUrl}}/users
+
+
+###GET UNIQUE USER
+GET {{apiUrl}}/users/12345678905
+
+
+###Delete element
+DELETE {{apiUrl}}/users/12345678905
+
