@@ -5,7 +5,7 @@ Content-Type: application/json
 
 {
   "name": "let", 
-  "cpf": "12345678905", 
+  "cpf": "12345678901", 
   "password": "12345"
 }
 
@@ -15,8 +15,17 @@ GET {{apiUrl}}/users
 
 
 ###GET UNIQUE USER
-GET {{apiUrl}}/users/12345678905
+GET {{apiUrl}}/users/12345678901
 
+
+###Update user
+PUT {{apiUrl}}/users/12345678901
+Content-Type: application/json
+
+{
+  "name": "Truth Name", 
+  "password": "12345"
+}
 
 ###Delete element
 DELETE {{apiUrl}}/users/12345678905

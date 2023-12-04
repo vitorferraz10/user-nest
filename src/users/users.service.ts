@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { v4 as uuid } from 'uuid';
+import { UsersDto } from './dto/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -14,12 +17,13 @@ export class UsersService {
 
   findUnique(cpf: string) {
     const hasUser = this.users.find((res) => res.cpf === cpf);
-    if (!hasUser) return 'User not exists';
+    if (!hasUser) throw new Error('User not found');
+
     return hasUser;
   }
 
-  createUser(dataUser: UserEntity) {
-    this.users.push(dataUser);
+  createUser(dataUser: UsersDto) {
+    this.users.push({ ...dataUser, id: uuid() });
   }
 
   async verifyDuplicatedCpf(cpf: string) {
@@ -28,12 +32,14 @@ export class UsersService {
     return isCpfAlreadyExist !== undefined;
   }
 
-  // async editPassword(cpf: number, newPassword: string) {
-  //   const getUserToCpf = this.users.filter((user) => user.cpf === cpf);
-  //   const newPasswordToUser = { ...getUserToCpf, password: newPassword };
+  async editUser(cpf: string, updateUser: Partial<UpdateUserDto>) {
+    const user = this.findUnique(cpf);
 
-  //   this.createUser(newPasswordToUser)
-  // }
+    user.name = updateUser.name || user.name;
+    user.password = updateUser.password || user.password;
+
+    return { message: 'user updated', user };
+  }
 
   async removeUser(cpf: string) {
     if (this.users.length > 0) {

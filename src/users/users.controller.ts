@@ -2,11 +2,16 @@ import {
   Body,
   Controller,
   Delete,
-  Get, Param, Post, Query
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { v4 as uuid } from 'uuid';
+
 import { UsersDto } from './dto/user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,8 +29,16 @@ export class UsersController {
 
   @Post()
   async create(@Body() dataUser: UsersDto) {
-    this.users.createUser({ ...dataUser, id: uuid() });
+    this.users.createUser(dataUser);
     return 'User created';
+  }
+
+  @Put(':cpf')
+  async update(
+    @Param('cpf') cpf: string,
+    @Body() updateUser: Partial<UpdateUserDto>,
+  ) {
+    return this.users.editUser(cpf, updateUser);
   }
 
   @Delete(':cpf')
